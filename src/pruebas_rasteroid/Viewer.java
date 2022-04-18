@@ -6,7 +6,7 @@ package pruebas_rasteroid;
 
 /**
  *
- * @author Arnau
+ * Esta es una prueba
  */
 public class Viewer {
     
