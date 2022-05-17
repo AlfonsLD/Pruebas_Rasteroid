@@ -77,7 +77,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         boton = new JButton("ENVIA EL ÁNGULO");
         textArea = new JTextArea("ESCRIBE EL ÁNGULO");
         viewer = new Viewer(naves, papi.getWidth()-30, papi.getHeight()-50);
-        viewer.addKeyListener(new TAdapter());
+        viewer.addKeyListener(new InputAdapter());
 
         c.gridx = 0;
         c.gridy = 0;
@@ -132,31 +132,5 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
             }
         }
     }
-    
-    private class TAdapter extends KeyAdapter {
 
-        @Override
-        public void keyPressed(KeyEvent e) {
-                int tecla = e.getKeyCode();
-            switch(tecla){
-                case 38: // La tecla de arriba
-                    accelerando = true;
-                    break;
-                case 37:   //  IZQUIERDA -->   37
-                    //restar
-                    anguloFuerza = anguloFuerza-10;
-                    for (int i = 0; i < naves.size(); i++) {
-                       naves.get(i).getDynamicBody().setAngle(anguloFuerza);
-                    }
-                    break;
-                case 39://  DERECHA -->     39
-                    anguloFuerza = anguloFuerza + 10;
-                    for (int i = 0; i < naves.size(); i++) {
-                       naves.get(i).getDynamicBody().setAngle(anguloFuerza);
-                    }
-                    break; 
-            }
-         
-        }
-    }
 }
