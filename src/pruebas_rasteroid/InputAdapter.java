@@ -26,13 +26,13 @@ public class InputAdapter extends KeyAdapter{
         switch (e.getKeyChar()) {
             case 'w': // La tecla de arriba
                 System.out.println("Holi arribs");
-                active_keys[0] = false;
+                active_keys[0] = true;
                 break;
             case 'a':   //  IZQUIERDA -->   
-                active_keys[1] = false;
+                active_keys[1] = true;
                 break;
             case 'd'://  DERECHA -->     
-                active_keys[2] = false;
+                active_keys[2] = true;
                 break; 
         }
     } 
@@ -47,13 +47,13 @@ public class InputAdapter extends KeyAdapter{
         System.out.println("Holi key released");
         switch (e.getKeyChar()) {
             case 'w': // La tecla de arriba
-                active_keys[0] = true;
+                active_keys[0] = false;
                 break;
             case 'a':   //  IZQUIERDA -->   
-                active_keys[1] = true;
+                active_keys[1] = false;
                 break;
             case 'd'://  DERECHA -->     
-            active_keys[2] = true;
+            active_keys[2] = false;
              break; 
         }
     }
