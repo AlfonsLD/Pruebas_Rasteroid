@@ -101,11 +101,11 @@ public class Viewer extends Canvas implements Runnable {
             
             //Vertical lines
             g2.drawLine((int) posX, 0,(int) posX,(int) posY - 5);
-            g2.drawLine((int) posX, (int) posY + 5,(int) posX, 1000 );
+            g2.drawLine((int) posX, (int) posY + 5,(int) posX, 1300 );
             
             //Horizontal
             g2.drawLine(0, (int)posY , (int) posX - 5 , (int) posY );
-            g2.drawLine((int) posX + 5, (int)posY , 1000 , (int) posY );
+            g2.drawLine((int) posX + 5, (int)posY , 1300 , (int) posY );
             
         }
     }

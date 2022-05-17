@@ -71,7 +71,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     // ------ INTERFAZ ----------
 
     private void setWindowParameters() {
-        this.setSize(1000, 700);
+        this.setSize(1300, 1000);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
     

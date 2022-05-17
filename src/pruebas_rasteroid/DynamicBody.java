@@ -101,7 +101,7 @@ public class DynamicBody extends Body{
         float posY = super.getPosY();
         
         //IF COLISION RIGHT 
-        if( ( posX + super.getRadius() )  > 970 ) {
+        if( ( posX + super.getRadius() )  > 1270 ) {
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         //IF COLISION LEFT
@@ -120,7 +120,7 @@ public class DynamicBody extends Body{
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         //IF COLISION BOT
-        } else if ( posY + super.getRadius()  > 650 ){
+        } else if ( posY + super.getRadius()  > 950 ){
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         
