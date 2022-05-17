@@ -25,6 +25,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private int anguloFuerza = 0;
     private int potencia = 0;
     private boolean accelerando = false;
+    private InputAdapter iad; 
 
     public Pruebas_Rasteroid() {
         crearInterfaz(this);
@@ -42,8 +43,18 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     // ------ GAME CONTROLLER ----------
     
     private void updatePositions() {
+        boolean [] teclas = iad.get_active_keys();
         for (GameObject nave : naves) {
-            
+        
+        accelerando = teclas[0];
+        if (teclas[1]) {
+            anguloFuerza -= 5;
+        }
+        if (teclas[2]) {
+            anguloFuerza += 5;
+        }
+        
+          nave.getDynamicBody().setAngle(anguloFuerza);
             if (!accelerando) {
                 nave.getDynamicBody().move(0,0);
                 if( potencia > 0 )potencia-= 0.3;
@@ -77,7 +88,10 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         boton = new JButton("ENVIA EL ÁNGULO");
         textArea = new JTextArea("ESCRIBE EL ÁNGULO");
         viewer = new Viewer(naves, papi.getWidth()-30, papi.getHeight()-50);
-        viewer.addKeyListener(new InputAdapter());
+        iad = new InputAdapter();
+        viewer.addKeyListener(iad);
+        
+         
 
         c.gridx = 0;
         c.gridy = 0;
@@ -125,7 +139,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         while (true) {
             try {
                 updatePositions();
-                accelerando = false;
                 sleep(16);
             } catch (InterruptedException ex) {
                 System.out.println("El thread ha sufrido un problema");
