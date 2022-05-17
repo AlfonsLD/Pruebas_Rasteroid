@@ -60,26 +60,22 @@ public class DynamicBody extends Body{
         float addSpeedY = cos * -1 / 90;
         
         //Aplicar veloidad
-        
-        
-        
-            //Apply speed limit X
-        if(speedX > speedLimit) {
-            speedX = speedLimit;
-        } else if (speedX < -speedLimit) {
-            speedX = -speedLimit;
-        }
-                 
-        
-            //Apply speed limit Y
-        if(speedY > speedLimit) {
-            speedY = speedLimit;
-        } else if (speedY < -speedLimit) {
-            speedY = -speedLimit;
-        }
-        
+
         speedY += addSpeedY;
         speedX += addSpeedX;
+        
+        
+        float speedTotal = (float) Math.sqrt( (speedY*speedY) + (speedX*speedX));
+        
+        if ( speedTotal > speedLimit ) {
+            
+            float xNorm = speedX / speedTotal;
+            float yNorm = speedY / speedTotal;
+            
+            speedX = xNorm * speedLimit;
+            speedY = yNorm * speedLimit;
+            
+        }
         
         
         if(potencia > 0){
