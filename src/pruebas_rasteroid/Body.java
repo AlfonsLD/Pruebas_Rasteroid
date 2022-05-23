@@ -45,7 +45,4 @@ public class Body {
     public void setRadius(float radius) {
         this.radius = radius;
     }
-
-    
-
 }

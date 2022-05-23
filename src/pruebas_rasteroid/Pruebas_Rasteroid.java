@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import static java.lang.Thread.sleep;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -22,15 +20,20 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private JButton boton;
     private JTextArea textArea ;
     
-    private int anguloFuerza = 0;
-    private int potencia = 0;
+
     private boolean accelerando = false;
-    private InputAdapter iad; 
+    private InputAdapter iad1; 
+    private InputAdapter iad2;
 
     public Pruebas_Rasteroid() {
+        iad1 = new InputAdapter('w','d', 'a');
+        iad2 = new InputAdapter('o','ñ', 'k');
+        
         crearInterfaz(this);
         
-        naves.add( new GameObject( new DynamicBody() ));
+        naves.add( new GameObject( new DynamicBody(iad1) ));
+        naves.add( new GameObject( new DynamicBody(iad2) ));
+       
 //        naves.add( new GameObject( new DynamicBody() ));
 //        naves.add( new GameObject( new DynamicBody() ));
 //        naves.add( new GameObject( new DynamicBody() ));
@@ -43,24 +46,25 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     // ------ GAME CONTROLLER ----------
     
     private void updatePositions() {
-        boolean [] teclas = iad.get_active_keys();
+     
         for (GameObject nave : naves) {
-        
-        accelerando = teclas[0];
-        if (teclas[1]) {
-            anguloFuerza -= 5;
-        }
-        if (teclas[2]) {
-            anguloFuerza += 5;
-        }
-        
-          nave.getDynamicBody().setAngle(anguloFuerza);
+            
+            boolean [] teclas = nave.getDynamicBody().getInputAdapter().get_active_keys();
+            accelerando = teclas[0];
+            if (teclas[1]) {
+                nave.getDynamicBody().setAngle(nave.getDynamicBody().getAngle() - 5);
+            }
+            if (teclas[2]) {
+                nave.getDynamicBody().setAngle(nave.getDynamicBody().getAngle() + 5);
+            }
+
             if (!accelerando) {
-                nave.getDynamicBody().move(0,0);
-                if( potencia > 0 )potencia-= 0.3;
+                nave.getDynamicBody().setPotencia(0);
+                
+            if( nave.getDynamicBody().getPotencia() > 0 )nave.getDynamicBody().setPotencia(nave.getDynamicBody().getPotencia() -0.3);
             } else {
-                potencia = 80;
-                nave.getDynamicBody().move(anguloFuerza, potencia);
+                nave.getDynamicBody().setPotencia(80);
+                nave.getDynamicBody().move();
             }
             
         }
@@ -88,8 +92,9 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         boton = new JButton("ENVIA EL ÁNGULO");
         textArea = new JTextArea("ESCRIBE EL ÁNGULO");
         viewer = new Viewer(naves, papi.getWidth()-30, papi.getHeight()-50);
-        iad = new InputAdapter();
-        viewer.addKeyListener(iad);
+        
+        viewer.addKeyListener(iad1);
+         viewer.addKeyListener(iad2);
         
          
 

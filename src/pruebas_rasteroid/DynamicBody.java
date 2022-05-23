@@ -4,6 +4,8 @@ public class DynamicBody extends Body{
     
     private float speedX, speedY;
     private float frictionCofficient = 0.05f;
+    private InputAdapter inputAdapter;
+    private double potencia = 0;
 
     //TO DO 
     
@@ -17,11 +19,10 @@ public class DynamicBody extends Body{
     
     //ESTO ES UN OBJETO MOVIBLE
     //MAP SIZE --> 1000, 700
-    public DynamicBody() {
-    
+    public DynamicBody(InputAdapter inputAdapter) {
+        this.inputAdapter = inputAdapter;
         speedX = (float) Math.random() * 5 - 2.5f;
-        speedY = (float) Math.random() * 5 - 2.5f;
-                
+        speedY = (float) Math.random() * 5 - 2.5f;        
     }
     
     
@@ -48,22 +49,31 @@ public class DynamicBody extends Body{
     public void setFrictionCofficient(float friction) {
         this.frictionCofficient = friction;
     }
-    
-    public void move( float angulo, float potencia ) {
 
+    public InputAdapter getInputAdapter() {
+        return inputAdapter;
+    }
+
+    public double getPotencia() {
+        return potencia;
+    }
+
+    public void setPotencia(double potencia) {
+        this.potencia = potencia;
+    }
+    
+    public void move(  ) {
         //APLICAR FOLMULA PARA SACAR FUERZA DE X e Y - sin cos
-        double anguloRad = Math.toRadians(angulo);
-        float sin = potencia * (float)Math.sin(anguloRad);
-        float cos = potencia * (float)Math.cos(anguloRad);
+        double anguloRad = Math.toRadians(getAngle());
+        float sin =(float) this.potencia * (float)Math.sin(anguloRad);
+        float cos = (float) this.potencia * (float)Math.cos(anguloRad);
         
         float addSpeedX = sin * 1 / 90;
         float addSpeedY = cos * -1 / 90;
         
         //Aplicar veloidad
-
         speedY += addSpeedY;
         speedX += addSpeedX;
-        
         
         float speedTotal = (float) Math.sqrt( (speedY*speedY) + (speedX*speedX));
         
@@ -73,25 +83,21 @@ public class DynamicBody extends Body{
             float yNorm = speedY / speedTotal;
             
             speedX = xNorm * speedLimit;
-            speedY = yNorm * speedLimit;
-            
+            speedY = yNorm * speedLimit;            
         }
         
         
         if(potencia > 0){
         System.out.println("potencia: " + potencia);        
-        System.out.println("angulo: " + angulo);
+        System.out.println("angulo: " + getAngle());
 
         System.out.println("cos: " + cos);
         System.out.println("sin: " + sin);
         System.out.println("\n\n");
         }
         
-        
         this.checkBorderCollisions();
         this.applyFriction();
-        
-        
     }
     
     
