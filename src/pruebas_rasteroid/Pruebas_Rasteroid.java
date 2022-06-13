@@ -57,17 +57,30 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
             if (teclas[2]) {
                 nave.getDynamicBody().setAngle(nave.getDynamicBody().getAngle() + 5);
             }
+        }
+            //COLLIION
+            for (int i = 0; i < naves.size(); i++) {
+            for (int j = 0; j < naves.size(); j++) {
+                if (i < j) {
+                    intersect(naves.get(i).getDynamicBody(), naves.get(j).getDynamicBody());
+                }
+            }
+        }
 
+        for (GameObject nave : naves) {
+              
             if (!accelerando) {
                 nave.getDynamicBody().setPotencia(0);
                 
-            if( nave.getDynamicBody().getPotencia() > 0 )nave.getDynamicBody().setPotencia(nave.getDynamicBody().getPotencia() -0.3);
+                if( nave.getDynamicBody().getPotencia() > 0 )nave.getDynamicBody().setPotencia(nave.getDynamicBody().getPotencia() -0.3);
             } else {
                 nave.getDynamicBody().setPotencia(80);
                 nave.getDynamicBody().move();
+                
             }
-            
+          
         }
+        
     }
     
     // ---------------------------------
@@ -144,13 +157,52 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         while (true) {
             try {
                 updatePositions();
-                 naves.get(0).getDynamicBody().checkShipCollision(naves.get(1).getDynamicBody());
-                  naves.get(1).getDynamicBody().checkShipCollision(naves.get(0).getDynamicBody());
+//                 naves.get(0).getDynamicBody().checkShipCollision(naves.get(1).getDynamicBody());
+//                  naves.get(1).getDynamicBody().checkShipCollision(naves.get(0).getDynamicBody());
                 sleep(16);
             } catch (InterruptedException ex) {
                 System.out.println("El thread ha sufrido un problema");
             }
         }
     }
+    
+     public static void intersect(DynamicBody a, DynamicBody b) {
+        //ref http://gamedev.stackexchange.com/questions/20516/ball-collisions-sticking-together
+        double xDist, yDist;
+        xDist = a.getPosX() - b.getPosX();
+        yDist = a.getPosY() - b.getPosY();
+        double distSquared = xDist * xDist + yDist * yDist;
+        // Check the squared distances instead of the the distances, same
+        // result, but avoids a square root.
+        if (distSquared <= (a.getRadius() + b.getRadius()) * (a.getRadius() + b.getRadius())) {
+            double speedXocity = b.getSpeedX() - a.getSpeedX();
+            double speedYocity = b.getSpeedY() - a.getSpeedY();
+            double dotProduct = xDist * speedXocity + yDist * speedYocity;
+            // Neat vector maths, used for checking if the objects moves towards
+            // one another.
+            if (dotProduct > 0) {
+                double collisionScale = dotProduct / distSquared;
+                double xCollision = xDist * collisionScale;
+                double yCollision = yDist * collisionScale;
+                // The Collision vector is the speed difference projected on the
+                // Dist vector,
+                // thus it is the component of the speed difference needed for
+                // the collision.
+                double combinedMass = 1 + 1;
+                double collisionWeightA = 2 * 1 / combinedMass;
+                double collisionWeightB = 2 * 1 / combinedMass;
+                a.setSpeedX((float) (a.getSpeedX() + collisionWeightA * xCollision));
+                a.setSpeedY((float) (a.getSpeedY() + collisionWeightA * yCollision));
+                b.setSpeedX((float) (b.getSpeedX() - collisionWeightB * xCollision));
+                b.setSpeedY((float) (b.getSpeedY() - collisionWeightB * yCollision));
+                a.setPotencia(a.getPotencia()/2);
+                b.setPotencia(a.getPotencia()/2);
+                //a.speedY += (collisionWeightA * yCollision);
+//                b.speedX -= (collisionWeightB * xCollision);
+//                b.speedY -= (collisionWeightB * yCollision);
+            }
+        }
+    }
+
 
 }
