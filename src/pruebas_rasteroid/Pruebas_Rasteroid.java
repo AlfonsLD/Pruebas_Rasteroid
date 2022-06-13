@@ -144,6 +144,8 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         while (true) {
             try {
                 updatePositions();
+                 naves.get(0).getDynamicBody().checkShipCollision(naves.get(1).getDynamicBody());
+                  naves.get(1).getDynamicBody().checkShipCollision(naves.get(0).getDynamicBody());
                 sleep(16);
             } catch (InterruptedException ex) {
                 System.out.println("El thread ha sufrido un problema");

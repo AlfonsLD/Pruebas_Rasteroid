@@ -136,9 +136,57 @@ public class DynamicBody extends Body{
         }
     }
     
-   
+   public  void checkShipCollision(DynamicBody objeto2){
+//       if (this.getPosX() + this.getRadius() + objeto2.getRadius() > objeto2.getPosX()
+//        && this.getPosX() < objeto2.getPosX() + this.getRadius() + objeto2.getRadius()
+//        && this.getPosY() + this.getRadius() + objeto2.getRadius() > objeto2.getPosY() 
+//        && this.getPosY() < objeto2.getPosY() + this.getRadius() + objeto2.getRadius()){
+//           System.out.println("Esta chocando");
+//       }
+        
+        double distance = Math.sqrt(
+               ((this.getPosX()- objeto2.getPosX())*(this.getPosX() - objeto2.getPosX()))+
+                 ((this.getPosY()- objeto2.getPosY())*(this.getPosY() - objeto2.getPosY()))      
+        );
 
-    private void applyFriction() {
+        if (distance < this.getRadius() + objeto2.getRadius())
+        {
+            //balls have collided
+            System.out.println("Esta chocando");
+            double collisionPointX = 
+            ((this.getPosX()* objeto2.getRadius()) + (objeto2.getPosX() * this.getRadius())) 
+            / (this.getRadius() + objeto2.getRadius());
+
+           double collisionPointY = 
+            ((this.getPosY()* objeto2.getRadius()) + (objeto2.getPosY() * this.getRadius())) 
+            / (this.getRadius() + objeto2.getRadius());
+            System.out.println("COllision point 1 es " + collisionPointX);
+            System.out.println("COllision point 2 es " + collisionPointY);
+            
+            float newSpeedX = (this.speedX * (1-1) +(2*1* objeto2.speedX) ) /(1+1);
+            float newSpeedY = (this.speedY * (1-1) +(2*1* objeto2.speedY) ) /(1+1);
+            float newSpeedX2 = (objeto2.speedX * (1-1) + (2*1* this.speedX))  / (1+1);
+            float newSpeedY2 = (objeto2.speedY + (1-1) + (2*1 * this.speedY)) / (1+1);
+            
+            System.out.println("La velocidad X del objeto 2 Antes era   " + objeto2.speedX + " y la Y es " +objeto2.speedY );
+            this.speedX = newSpeedX;
+            this.speedY= newSpeedY;
+            objeto2.speedX = newSpeedX2;
+            objeto2.speedY = newSpeedY2;
+            this.potencia = this.potencia /2;
+            objeto2.potencia = objeto2.potencia+1;
+            objeto2.move();
+            System.out.println("La velocidad X del objeto 2 ahora es  " + objeto2.speedX + " y la Y es " +objeto2.speedY );
+        }
+       
+  }
+        
+
+
+
+       
+   
+  private void applyFriction() {
        //SPEED LOSE
         if ( speedX > 0.05 ) {
             speedX -=  frictionCofficient;
